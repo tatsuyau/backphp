@@ -18,17 +18,27 @@ class Database{
 		return true;
 	}
    public function select($sql, $params=[]){
-       $prepare = $this->prepare($sql, $params);
-       $prepare->execute();
-       return $prepare->fetchAll(PDO::FETCH_ASSOC); 
+       try{
+            $prepare = $this->prepare($sql, $params);
+            $prepare->execute();
+            return $prepare->fetchAll(PDO::FETCH_ASSOC); 
+       }catch(PDOException $e){
+           exit($e->getMessage());
+          }
    }
    public function lastInsertId(){
        $lastid = $this->pdo->lastInsertId();
        return $lastid;
    }
    public function execute($sql, $params=[]){
-       $prepare = $this->prepare($sql, $params);
-       return $prepare->execute();
+   	  try{
+   	      var_dump($params);
+       		$prepare = $this->prepare($sql, $params);
+       		$res = $prepare->execute();
+       		return $res;
+       }catch(PDOException $e){
+       		exit($e->getMessage());
+       }
    }
     public function beginTransaction(){
         return $this->dbh->beginTransaction();
@@ -44,7 +54,11 @@ class Database{
     private function prepare($sql, $params){
        $prepare = $this->pdo->prepare($sql);
        foreach($params as $key => $value){
-           $prepare->bindValue(":{$key}", $value);
+           $type = PDO::PARAM_STR;
+           if(is_numeric($value)){
+               $type = PDO::PARAM_INT;
+              }
+           $prepare->bindValue(":{$key}", $value, $type);
        }
        return $prepare;
    }

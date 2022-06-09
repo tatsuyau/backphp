@@ -24,21 +24,21 @@ class Model{
 	}
 	public function update($c, $u){
 		$sql = "UPDATE " . $this->table_name . " ";
-		$u['modified'] = date("Y-m-d H:i:s");
+		$u['updated_at'] = date("Y-m-d H:i:s");
 		$sql .= $this->createUpdates($u);
-		$sql .= $this->createConditions($p);
+		$sql .= $this->createConditions($c);
 		$p = array_merge($c, $u);
 		return $this->Database->execute($sql, $p);
 	}
 	public function insert($p){
 		$now = date("Y-m-d H:i:s");
-		$p["created"] = $now;
-		$p["modified"] = $now;
+		$p["created_at"] = $now;
+		$p["updated_at"] = $now;
 		$sql = $this->createInsert($p);
 		return $this->Database->execute($sql, $p);
 	}
 	public function delete($p){
-        $sql = "DELETE FROM " . $this->_getTableName() . " ";
+        $sql = "DELETE FROM " . $this->table_name . " ";
         $sql .= $this->createConditions($p);
         return $this->Database->execute($sql, $p);
 	}
@@ -68,10 +68,10 @@ class Model{
     		$sql .= "LIMIT " ;
     	}
     	if(!empty($options['offset'])){
-    		$sql .= " " . $options["offset"] . ", ";
+    		$sql .= " :offset , ";
     	}
     	if(!empty($options['limit'])){
-    		$sql .= " " . $options["limit"] . " ";	
+    		$sql .= " :limit ";	
     	}
     	return $sql;
     }
@@ -90,7 +90,7 @@ class Model{
 
     protected function createInsert($p)
     {
-        $sql = "INSERT INTO " . $this->_getTableName() . " ";
+        $sql = "INSERT INTO " . $this->table_name . " ";
         $sql .= "( ";
         $i = 0;
         foreach ($p as $key => $val) {
