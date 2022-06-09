@@ -2,7 +2,7 @@
 
 バックエンドに特化したマイクロフレームワーク。
 
-最大の特徴は、設定ファイルが1つなこと。
+最大の特徴は、**設定ファイルが1つ**なこと。
 
 
 
@@ -87,7 +87,7 @@ Router::set("", function(){
 	Render::json($response);
 });
 Router::set("userlist", function(){
-	$service = new StarShootService();
+	$service = new Service();
 	$user_list = $service->getUserList();
 	$response = [
 		'user_list' => $user_list,
@@ -95,7 +95,7 @@ Router::set("userlist", function(){
 	Render::json($response);
 });
 Router::set("user", function(){
-	$service = new StarShootService();
+	$service = new Service();
 	$user_id = Request::get("user_id");
 	$user_data = $service->getUserData($user_id);
 	$response = [
