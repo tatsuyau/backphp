@@ -82,7 +82,7 @@ if(ENV == "product"){
 // URLごとに処理を記述しましょう。
 Router::set("", function(){
 	$response = [
-		'message' => "not found",
+		'message' => "hello, world.",
 	];
 	Render::json($response);
 });
@@ -105,7 +105,12 @@ Router::set("user", function(){
 });
 
 // ルーティングを実行します。ルーティング文字列はGETパラメーターで手軽に。
-Router::run(Request::get("api"));
+Router::run(Request::get("api"), function(){
+	$response = [
+		'error' => "api not found.",
+	];
+	Render::json($response);
+});
 
 // 各ルーティングで重複するような処理は適当なクラスでまとめておきましょう。
 class Service{
