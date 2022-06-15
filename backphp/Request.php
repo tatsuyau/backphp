@@ -12,4 +12,8 @@ class Request{
 		}
 		return "";
 	}
+	public static function makeToken($str, $salt){
+		$base = $str . $salt;
+		return md5($base);
+	}
 }

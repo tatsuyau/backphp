@@ -32,7 +32,6 @@ class Database{
    }
    public function execute($sql, $params=[]){
    	  try{
-   	      var_dump($params);
        		$prepare = $this->prepare($sql, $params);
        		$res = $prepare->execute();
        		return $res;

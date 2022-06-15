@@ -10,4 +10,9 @@ class Render{
 		$json = json_encode($varList);
 		echo $json;
 	}
+	public static function jsonDebug($varList){
+		echo "<pre>";
+		print_r($varList);
+		echo "</pre>";	
+	}
 }
